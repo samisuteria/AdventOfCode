@@ -44,6 +44,67 @@ func Day1Part2(input: String) -> Int {
     return 0 //error
 }
 
-let day1String = readFile("Day1")
-Day1Part1(day1String)
-Day1Part2(day1String)
+//let day1String = readFile("Day1")
+//Day1Part1(day1String)
+//Day1Part2(day1String)
+
+struct Dimensions {
+    let length: Int
+    let width: Int
+    let height: Int
+}
+
+func Day2StringToDimensions(input: String) -> [Dimensions] {
+    var presents = [Dimensions]()
+    
+    let listOfPresentDimensions = day2String.componentsSeparatedByString("\n")
+    
+    listOfPresentDimensions.forEach { (presentString) -> () in
+        let presentValues = presentString.componentsSeparatedByString("x")
+        let present = Dimensions(length: Int(presentValues[0])!, width: Int(presentValues[1])!, height: Int(presentValues[2])!)
+        presents.append(present)
+    }
+    
+    return presents
+}
+
+func Day2Part1(input: String) -> Int {
+    
+    let presents = Day2StringToDimensions(input)
+    
+    var total = 0
+    
+    presents.forEach { (present) -> () in
+        
+        let side1 = present.length*present.width
+        let side2 = present.width*present.height
+        let side3 = present.height*present.length
+        
+        total = total + 2*(side1 + side2 + side3)
+        
+        total = total + min(side1, side2, side3)
+    }
+    
+    return total
+}
+
+func Day2Part2(input: String) -> Int {
+    let presents = Day2StringToDimensions(day2String)
+    
+    var total = 0
+    
+    presents.forEach { (present) -> () in
+        let perimeter1 = 2*(present.length + present.width)
+        let perimeter2 = 2*(present.length + present.height)
+        let perimeter3 = 2*(present.width + present.height)
+        
+        total = total + min(perimeter1, perimeter2, perimeter3) + present.height*present.width*present.length
+        
+    }
+    
+    return total
+}
+
+let day2String = readFile("Day2")
+Day2Part1(day2String)
+Day2Part2(day2String)
